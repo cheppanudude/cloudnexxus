@@ -1,9 +1,26 @@
-- name: Deploy to S3
-  uses: aws-actions/s3-sync-action@v2.1.1
-  with:
-    source_dir: 'build'
-    bucket: ${{ secrets.S3_BUCKET }}
-    region: ${{ secrets.AWS_REGION }}
-    access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+name: Upload to S3
+
+on:
+  push:
+    branches:
+      - main  # Or the branch you want to use for deployment
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+   
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+   
+    - name: Upload to S3
+      uses: aws-actions/s3-sync-action@v2.1.1
+      with:
+        source_dir: '.'  
+        bucket: ${{ secrets.S3_BUCKET }}
+        region: ${{ secrets.AWS_REGION }}
+        access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
